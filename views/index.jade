@@ -1,0 +1,101 @@
+extends layout
+
+block content
+  //- h1= title
+  //- p Welcome to #{title}
+  script(src='/socket.io/socket.io.js')
+
+  .container
+    .row
+      nav.navbar.navbar-inverse
+        .container-fluid
+          .navbar-header
+            a.navbar-brand(href='#') Diskus
+          ul.nav.navbar-nav
+            li
+              a(href='') Home
+            li
+              a(href='') Page1
+            li
+              a(href='') Page2
+          form.navbar-form.navbar-left(action='',method='')
+            .form-group
+              input#usrname.form-control(type='text')
+            button#uname-set.btn.btn-default(type='button') set username
+          ul.nav.navbar-right.navbar-nav
+            li
+              a(href='#')
+                span.user-glyph.glyphicon.glyphicon-user(style='display:none;')
+                span.nav-user-name
+
+    .row.container-fluid.chatarea
+    .row.write-container
+      button#emoji-btn(type='button') :-)
+      input#writebox(placeholder='enter your message')
+      button#chat-send-btn(type='button') Send
+      //- nav.navbar.navbar-inverse
+      //-   .container-fluid
+      //-     .navbar-header
+      //-       a.navbar-brand(href='#') :-)
+      //-     form.navbar-form.navbar-left(action='', method='')
+      //-       .form-group
+      //-         input.form-control(type='text')
+      //-       button.btn.btn-default(type='button') Send
+              
+
+  script.
+    var socket = io();
+
+    function makeAjaxPost(url, data, successCallback){
+      var datastring = "";
+      for(var key in data){
+          datastring = datastring + key + '=' + data[key] + '&';
+      }
+      datastring = datastring.substring(0, datastring.length-1);  
+      var xreq = new XMLHttpRequest();
+      xreq.open('POST', url, true);
+      xreq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xreq.onreadystatechange = function(){
+        if(xreq.readyState == 4 ){
+          if(xreq.status == 200){
+            successCallback(xreq.responseText);
+          }
+          else {
+            alert('something other thatn 200 responsecode came. sorry');
+          }
+        }
+      };
+      xreq.send(datastring);
+    }
+
+    var fetchById = function(idee){
+      return document.getElementById(idee);
+    }
+
+    var fetchByClass = function(cl){
+      var elementCollection = document.getElementsByClassName(cl);
+      if(elementCollection.length == 1){
+        return elementCollection[0]
+      }
+      else { return elementCollection; }
+    }
+
+    function isJson(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }z
+      return true;
+    }
+
+    fetchById('uname-set').addEventListener('click', function(){
+      var unm = fetchById('usrname').value;
+      makeAjaxPost('/set-user',{ username : unm }, function(responseText){
+        var resObj = (isJson(responseText)) ? JSON.parse(responseText) : responseText;
+        console.log('username='+resObj.username+' ::: action='+resObj.action);
+        fetchByClass('user-glyph').style.display = 'inline';
+        fetchByClass('nav-user-name').innerHTML = ' '+unm;
+      });
+    });
+
