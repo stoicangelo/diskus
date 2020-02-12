@@ -13,7 +13,7 @@ a {
 }
 
 .chatarea{
-  background-color: grey;
+  background-color: #ebebe0;
   height: 800px;
   margin-top: -21px;
 }
@@ -43,4 +43,8 @@ a {
   padding-top: 7px;
   padding-bottom: 6px;
   margin-left: 15px;
+}
+
+.message-container{
+  padding-top: 10px;
 }
