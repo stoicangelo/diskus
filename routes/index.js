@@ -5,30 +5,16 @@ var Group = require('../models/group-model').Group;
 var GroupMessage = require('../models/group-model').GroupMessage;
 var socketAPI = require('../config/socket.js');
 
+//this is going to be dynamic and fetched as a socket event parameter
 const groupName = 'tester';
-// Group.findOne({name : groupName}).then((err,data) => {
-//   console.log(data);
-//   if(!data){
-//     var testerGrp = new Group({name : groupName, categories : ['dev']});
-//     testerGrp.save((err)=>{
-//       if(err)
-//         console.log('error occured while saving tester group ::: '+err);
-//       else
-//         console.log('tester group CREATED now!');
-//     });
-//   }
-//   else
-//     console.log('tester groeup already ache. No need to create');
-// });
+
 
 socketAPI.io.on('connection', function(socket){
   
   console.log('socket online from inside index.js');
   socket.on('chat-sent', function(param) {
   
-    console.log('chat sent received');
-    //this is going to be dynamic and fetched as a socket event parameter
-    var groupName = 'tester'; 
+    console.log('chat sent received'); 
 
     ChatUser.findOne({username : param.username}, (err,usr)=>{
       if(err || !usr){
@@ -42,7 +28,9 @@ socketAPI.io.on('connection', function(socket){
           return;
         }
         console.log('printing the corresponding group :: '+grp);
-        grp.messages.push({user: usr._id, text : param.message});
+        var mess = {sender: usr._id, text : param.message};
+        console.log('THIS IS THE MESSAGE BEING INSERTED ::: '+JSON.stringify(mess));
+        grp.messages.push(mess);
         grp.save((err)=>{
           if(err){
             console.log(err);
@@ -58,7 +46,24 @@ socketAPI.io.on('connection', function(socket){
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Diskus' });
+  console.log('hit esheche');
+  var messageList = [];
+  Group.findOne({name : groupName}, async function(err,grp) {
+    if(err){
+      console.log('gouranga ::: '+err);
+      res.end();
+      return;
+    }
+    for(var i=0;i<grp.messages.length; i++){
+      var mess = grp.messages[i];
+      console.log(mess);
+      var usr = await ChatUser.findById(mess.sender);
+      messageList.push({sendername : usr.username, text : mess.text});
+    }
+    console.log(messageList.length);
+    res.render('index', { title: 'Diskus' , messages : messageList});
+  });
+  
 });
 
 router.post('/set-user', function(req, res) {

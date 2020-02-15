@@ -26,6 +26,11 @@ block content
         span#message-user
           b asojfba &nbsp : &nbsp
         span#message-text sadlbsdgisdabgfiasdbighkbasdihgbasdihgbasdhib
+      - each message in messages
+        .message-container
+          span#message-user
+            b #{message.sendername} &nbsp : &nbsp
+          span#message-text #{message.text}
 
     .row.write-container
       button#emoji-btn(type='button') :-)
@@ -63,14 +68,16 @@ block content
     }
 
     fetchById('chat-send-btn').addEventListener('click', emitSendChatSocketevent);
-    //  do the same event firing on enter key press fetchById('chat-send-btn').('click', emitSendChatSocketevent);
-    
+
+    fetchById('writebox').addEventListener('keydown', (event)=>{
+      if(event.keyCode == 13 && !event.shiftKey){
+        emitSendChatSocketevent();
+      }
+    });
+
 
     socket.on('group-message-handled', function(data){
       var messageContainer = '<div class="message-container"><span class="message-user"><b>'+data.user+'&nbsp:&nbsp</b></span><span class="message-text">'+data.message+'</span></div>';
       fetchByClass('chatarea').innerHTML += messageContainer;
       fetchById('writebox').value = '';
     });
-
-    //- fetchById().addEventListener('click', )
-
