@@ -5,8 +5,8 @@ block content
   script(src='/socket.io/socket.io.js')
   script(src=' /javascripts/utility-scripts.js')
 
-  .container
-    .row
+  .container-fluid
+    .row.row-nav
       nav.navbar.navbar-inverse
         .container-fluid
           .navbar-header
@@ -33,9 +33,12 @@ block content
           span#message-text #{message.text}
 
     .row.write-container
-      button#emoji-btn(type='button') :-)
-      input#writebox(placeholder='enter your message')
-      button#chat-send-btn(type='button') Send
+      .col-md-1
+        button#emoji-btn(type='button') :-)
+      .col-md-10 
+        input#writebox(placeholder='enter your message')
+      .col-md-1
+        button#chat-send-btn(type='button') Send
               
 
   script.
@@ -75,9 +78,15 @@ block content
       }
     });
 
+    setInterval(function(){
+      var chatArea = fetchByClass('chatarea')
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }, 200);
 
     socket.on('group-message-handled', function(data){
       var messageContainer = '<div class="message-container"><span class="message-user"><b>'+data.user+'&nbsp:&nbsp</b></span><span class="message-text">'+data.message+'</span></div>';
-      fetchByClass('chatarea').innerHTML += messageContainer;
+      var chatArea = fetchByClass('chatarea');
+      chatArea.innerHTML += messageContainer;
       fetchById('writebox').value = '';
+      scrollDown2Latest(chatArea);
     });

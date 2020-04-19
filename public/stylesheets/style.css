@@ -14,7 +14,7 @@ a {
 
 .chatarea{
   background-color: #ebebe0;
-  height: 800px;
+  /* height:max-content;  */
   margin-top: -21px;
 }
 
@@ -23,18 +23,21 @@ a {
   padding-left: 15px;
   background-color: black;
   height: 50px;
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
 }
 
 #emoji-btn{
   padding-top: 7px;
   padding-bottom: 6px;
-  width: 30px;
+  width: 35px;
   margin-right: 15px;
   padding-right: 5px;
 }
 
 #writebox{
-  width: 950px;
+  width: inherit;
   padding-top: 7px;
   padding-bottom: 6px;
 }
@@ -42,9 +45,27 @@ a {
 #chat-send-btn{
   padding-top: 7px;
   padding-bottom: 6px;
-  margin-left: 15px;
+  margin-left: -50px;
 }
 
 .message-container{
   padding-top: 10px;
+}
+
+body{
+  padding: 0px 0px 0px 0px;
+}
+
+.chatarea{
+  overflow: scroll;
+  width: 100vw;
+  position: fixed;
+  top: 75px;
+  bottom: 50px;
+}
+
+.row-nav{
+  position: fixed;
+  top: 0;
+  width: 100vw;
 }

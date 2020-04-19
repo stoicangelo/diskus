@@ -40,3 +40,7 @@ function isJson(str) {
     }
     return true;
 }
+
+function scrollDown2Latest(element){
+    element.scrollTop = element.scrollHeight;
+}
