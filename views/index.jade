@@ -1,26 +1,13 @@
 extends layout
 
-block content
-  
+block header
+
   script(src='/socket.io/socket.io.js')
   script(src=' /javascripts/utility-scripts.js')
 
+block content
+  
   .container-fluid
-    .row.row-nav
-      nav.navbar.navbar-inverse
-        .container-fluid
-          .navbar-header
-            a.navbar-brand(href='#') Diskus
-          form.navbar-form.navbar-left(action='',method='')
-            .form-group
-              input#usrname.form-control(type='text')
-            button#uname-set.btn.btn-default(type='button') set username
-          ul.nav.navbar-right.navbar-nav
-            li
-              a(href='#')
-                span.user-glyph.glyphicon.glyphicon-user(style='display:none;')&nbsp
-                span.nav-user-name
-
     .row.container-fluid.chatarea
       .message-container
         span#message-user

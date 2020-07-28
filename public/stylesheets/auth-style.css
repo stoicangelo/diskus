@@ -1,0 +1,13 @@
+.auth-page-container{
+    background-color: #ebebe0;
+    height: 100vh;
+    top: 0px;
+}
+
+.auth-form-container{
+    margin-top: 50px;
+    padding-top: 25px;
+    height: fit-content;
+    background-color: #8a8a7f;
+}
+  

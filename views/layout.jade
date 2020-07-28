@@ -6,5 +6,29 @@ html
     script(src="https://code.jquery.com/jquery-3.2.1.slim.min.js", integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN", crossorigin="anonymous")
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa',crossorigin='anonymous')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src=' /javascripts/utility-scripts.js')
+
+    
+    block header
+
   body
+    nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          a.navbar-brand(href='#') #{user}
+        form.navbar-form.navbar-left(action='',method='')
+          .form-group
+            input#usrname.form-control(type='text')
+          button#uname-set.btn.btn-default(type='button') set username
+        ul.nav.navbar-right.navbar-nav
+          li
+            a(href='#')
+              span.user-glyph.glyphicon.glyphicon-user(style='display:none;')&nbsp
+              span.nav-user-name        
+        
+        if user
+          form.navbar-form.navbar-right(action='/logout',method='get')
+            button.btn.btn-default#logout-btn(type='submit') Logout
+    
     block content
+

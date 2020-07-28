@@ -1,0 +1,27 @@
+extends layout
+block header
+		link(rel='stylesheet', href='/stylesheets/auth-style.css')
+block content
+	.container-fluid.auth-page-container
+		.row
+			.auth-form-container.container.col-lg-offset-3.col-lg-6
+				form.form-horizontal(action="/auth/login", method="post")
+					.form-group
+						label.col-lg-3.control-label(for="username") Username :
+						.col-lg-8
+							input#username.form-control(type="text", name="username", placeholder="Enter Username")
+					.form-group
+						label.col-lg-3.control-label(for="password") Password :
+						.col-lg-8
+							input#password.form-control(type="text", name="password", placeholder="Enter Password")
+					.form-group
+						.col-lg-offset-3.col-lg-8
+							.form-check
+								label(for="remember-check")
+									input#remember-check(type="checkbox", name="remember-check")
+									&nbsp keep me signed in
+					.form-group
+						.col-lg-offset-3.col-lg-8
+							button.btn.btn-default(type="submit") Log in
+					
+					a(href="/auth/registration") Not a member yet? Sign Up

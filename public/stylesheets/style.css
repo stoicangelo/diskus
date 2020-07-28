@@ -3,14 +3,11 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
+/* a {
   color: #00B7FF;
-}
+} */
 
-.container{
-  height: 800px;
-  border: 0px;
-}
+
 
 .chatarea{
   background-color: #ebebe0;
@@ -63,9 +60,14 @@ body{
   top: 75px;
   bottom: 50px;
 }
-
+/* 
 .row-nav{
-  position: fixed;
+  position: static;
   top: 0;
   width: 100vw;
+} */
+
+.navbar {
+  margin-bottom: 2px;
 }
+

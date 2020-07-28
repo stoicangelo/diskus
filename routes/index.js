@@ -1,18 +1,19 @@
 var express = require('express');
 var router = express.Router();
-var ChatUser = require('../models/group-model').ChatUser;
+var ChatUser = require('../models/user-model').ChatUser;
 var Group = require('../models/group-model').Group;
-var GroupMessage = require('../models/group-model').GroupMessage;
 var socketAPI = require('../config/socket.js');
+const {ensureAuthenticated, forwardAuthenticated} = require('../config/custom-middleware');
 
 //this is going to be dynamic and fetched as a socket event parameter
-const groupName = 'tester';
+const groupName = 'tester-group';
 
 
 socketAPI.io.on('connection', function(socket){
   
   console.log('socket online from inside index.js');
   socket.on('chat-sent', function(param) {
+    
   
     console.log('chat sent received'); 
 
@@ -45,8 +46,8 @@ socketAPI.io.on('connection', function(socket){
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log('hit esheche');
+router.get('/', ensureAuthenticated, function(req, res, next) {
+  console.log('home page hit');
   var messageList = [];
   Group.findOne({name : groupName}, async function(err,grp) {
     if(err){
@@ -66,25 +67,5 @@ router.get('/', function(req, res, next) {
   
 });
 
-router.post('/set-user', function(req, res) {
-  var usrnm = req.body.username;
-  ChatUser.findOne({username : usrnm}).then((row)=>{
-    if(!row){
-      var usr = new ChatUser();
-      usr.username = usrnm;
-      usr.save().then(()=>{
-        console.log('notun User insert hoye geche');
-        res.json({ username : usrnm});
-      }).catch(function(err){
-        console.error('error occured while inserting username in db ::: '+err);
-      });
-    }
-    else{ 
-      console.log('username already exists. insert ar korlam na');
-      res.end();
-    }
-  }).catch((err)=>{ console.log('error occured while searching for username ::: '+err)});
-  //res.json({ username : usrnm});
-});
 
 module.exports = router;
